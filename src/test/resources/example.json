@@ -1,0 +1,32 @@
+{
+  "coordinates": null,
+  "favorited": false,
+  "truncated": false,
+  "created_at": "Wed Jun 06 20:07:10 +0000 2012",
+  "id_str": "210462857140252672",
+  "entities": {
+    "urls": [
+      {
+      "expanded_url": "https://dev.twitter.com/terms/display-guidelines",
+      "url": "https://t.co/Ed4omjYs",
+      "indices": [
+        76,
+        97
+      ],
+      "display_url": "dev.twitter.com/terms/display-\u2026"
+    }
+    ],
+    "hashtags": [
+      {
+      "text": "Twitterbird",
+      "indices": [
+        19,
+        31
+      ]
+    }
+    ],
+    "user_mentions": [
+
+    ]
+  }
+}

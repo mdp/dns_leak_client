@@ -1,5 +1,20 @@
 import com.github.mdp.dns_leak.DNSSerializer;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
+import org.msgpack.util.json.JSON;
+
+import javax.swing.text.Style;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 /*
@@ -9,8 +24,45 @@ import static org.junit.Assert.*;
  * @author mdp, @date 5/1/14 1:50 PM
  */
 public class DNSSerializerTest {
+
     @Test public void testDNSSerializerMethod() {
         DNSSerializer dnsSerializer = new DNSSerializer("d.mdp.im", "uuid");
-        assertTrue(true);
+        JSONObject testdata = loadExampleJSON("example.json");
+        List<String> dnsQueries = null;
+        try {
+            dnsQueries = dnsSerializer.encode(testdata);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (String s : dnsQueries) {
+            System.out.println(s);
+            assertTrue(validate(s));
+        }
+    }
+
+    private boolean validate(String dnsQuery) {
+        String[] qs = dnsQuery.split("\\.");
+        if (!(qs[0].contains("1") || qs[0].contains("0"))) {
+            return false;
+        }
+        for (String s : qs) {
+            if (s.length() > DNSSerializer.MAX_LEN_SUBDOMAIN) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private JSONObject loadExampleJSON(String filename) {
+        String path = this.getClass().getResource(filename).getFile();
+        byte[] encoded = new byte[0];
+        String content = "";
+        try {
+            encoded = Files.readAllBytes(Paths.get(path));
+            content = new String(encoded, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new JSONObject(content);
     }
 }
